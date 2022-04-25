@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services;
 
@@ -6,7 +7,6 @@ use App\DataTransferObjects\UserLoginDTO;
 use App\DataTransferObjects\UserRegisterDTO;
 use App\Domain\Entities\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UserService
@@ -32,7 +32,7 @@ class UserService
     public function register(UserRegisterDTO $registerDTO): array
     {
         $user = new User(
-            Str::uuid(),
+            (string)Str::uuid(),
             $registerDTO->getName(),
             $registerDTO->getEmail(),
         );

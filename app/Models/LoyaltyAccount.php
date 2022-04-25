@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Models;
 
@@ -12,6 +13,21 @@ class LoyaltyAccount extends Model
 {
     protected $table = 'loyalty_account';
 
+    /**
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
     protected $fillable = [
         'phone',
         'card',
@@ -20,25 +36,4 @@ class LoyaltyAccount extends Model
         'phone_notification',
         'active',
     ];
-
-    public function getBalance(): float
-    {
-        return LoyaltyPointsTransaction::where('canceled', '=', 0)->where('account_id', '=', $this->id)->sum('points_amount');
-    }
-
-    public function notify()
-    {
-        if ($this->email != '' && $this->email_notification) {
-            if ($this->active) {
-                Mail::to($this)->send(new AccountActivated($this->getBalance()));
-            } else {
-                Mail::to($this)->send(new AccountDeactivated());
-            }
-        }
-
-        if ($this->phone != '' && $this->phone_notification) {
-            // instead SMS component
-            Log::info('Account: phone: ' . $this->phone . ' ' . ($this->active ? 'Activated' : 'Deactivated'));
-        }
-    }
 }
