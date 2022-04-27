@@ -1,41 +1,64 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Exceptions\UserNotFoundException;
+use App\Http\Requests\UserLoginRequest;
+use App\Http\Requests\UserRegisterRequest;
+use App\Services\UserService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function register(Request $request)
+    /**
+     * @var UserService
+     */
+    public UserService $userService;
+
+    /**
+     * @param UserService $userService
+     */
+    public function __construct(UserService $userService)
     {
-        $data = $request->all();
-        $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
-        return response()->json(['user' => $user, 'token' => $user->createToken('apiToken')->plainTextToken], 201);
+        $this->userService = $userService;
     }
 
-    public function login(Request $request)
+    /**
+     * @param \App\Http\Requests\UserRegisterRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     * @throws UserNotFoundException
+     */
+    public function register(UserRegisterRequest $request): JsonResponse
     {
-        $data = $request->all();
-        $user = User::where('email', $data['email'])->first();
+        $data = $this->userService->register($request->getDTO());
 
-        if ($user && Hash::check($data['password'], $user->password)) {
-            $token = $user->createToken('apiToken')->plainTextToken;
-        } else {
+        return response()->json($data, 201);
+    }
+
+    /**
+     * @param \App\Http\Requests\UserLoginRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function login(UserLoginRequest $request): JsonResponse
+    {
+        try {
+            $data = $this->userService->login($request->getDTO());
+            return response()->json($data, 201);
+        } catch (UserNotFoundException $exception) {
             return response()->json(['message' => 'Bad credentials'], 401);
         }
-
-        return response()->json(['user' => $user, 'token' => $token], 201);
     }
 
-    public function logout(Request $request)
+    /**
+     * @throws UserNotFoundException
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function logout(Request $request): JsonResponse
     {
-        $request->user()->tokens()->delete();
-        return ['message' => 'Logged out'];
+        $this->userService->logout($request->post('user_id'));
+
+        return response()->json(['message' => 'Logged out'], 201);
     }
 }
