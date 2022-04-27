@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Domain\Entities\LoyaltyAccount;
+use App\Domain\Aggregates\LoyaltyAccount;
 use App\Exceptions\AccountCannotCreateException;
 use App\Exceptions\AccountNotFoundException;
 use App\Repositories\Interfaces\LoyaltyAccountRepositoryInterface;
@@ -13,7 +13,7 @@ use InvalidArgumentException;
 class LoyaltyAccountRepository implements LoyaltyAccountRepositoryInterface
 {
     /**
-     * @param \App\Domain\Entities\LoyaltyAccount $account
+     * @param \App\Domain\Aggregates\LoyaltyAccount $account
      * @throws \App\Exceptions\AccountCannotCreateException
      */
     public function create(LoyaltyAccount $account): void
@@ -34,7 +34,7 @@ class LoyaltyAccountRepository implements LoyaltyAccountRepositoryInterface
     }
 
     /**
-     * @param \App\Domain\Entities\LoyaltyAccount $account
+     * @param \App\Domain\Aggregates\LoyaltyAccount $account
      * @return void
      */
     public function changeStatus(LoyaltyAccount $account): void
@@ -44,7 +44,7 @@ class LoyaltyAccountRepository implements LoyaltyAccountRepositoryInterface
 
     /**
      * @param string $accountId
-     * @return \App\Domain\Entities\LoyaltyAccount
+     * @return \App\Domain\Aggregates\LoyaltyAccount
      * @throws \App\Exceptions\AccountNotFoundException
      * @throws \InvalidArgumentException
      */
@@ -62,7 +62,7 @@ class LoyaltyAccountRepository implements LoyaltyAccountRepositoryInterface
     /**
      * @param string $type
      * @param string $id
-     * @return \App\Domain\Entities\LoyaltyAccount
+     * @return \App\Domain\Aggregates\LoyaltyAccount
      * @throws \App\Exceptions\AccountNotFoundException
      * @throws \InvalidArgumentException
      */
@@ -83,7 +83,7 @@ class LoyaltyAccountRepository implements LoyaltyAccountRepositoryInterface
 
     public function getBalance(): float
     {
-        return LoyaltyPointsTransaction::where('canceled', '=', 0)->where('account_id', '=', $this->id)->sum('points_amount');
+        return LoyaltyPointsTransactionRepository::where('canceled', '=', 0)->where('account_id', '=', $this->id)->sum('points_amount');
     }
 
     /**

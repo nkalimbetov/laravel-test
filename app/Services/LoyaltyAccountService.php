@@ -4,7 +4,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\DataTransferObjects\AccountCreateDTO;
-use App\Domain\Entities\LoyaltyAccount;
+use App\Domain\Aggregates\LoyaltyAccount;
 use App\Events\AccountStatusChanged;
 use App\Repositories\Interfaces\LoyaltyAccountRepositoryInterface;
 use Illuminate\Support\Str;

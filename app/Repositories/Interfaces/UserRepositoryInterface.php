@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace App\Repositories\Interfaces;
 
-use App\Domain\Entities\User;
+use App\Domain\Aggregates\User;
 
 interface UserRepositoryInterface
 {
     /**
-     * @param \App\Domain\Entities\User $user
+     * @param \App\Domain\Aggregates\User $user
      * @param string $password
      * @return void
      */
@@ -17,7 +17,7 @@ interface UserRepositoryInterface
     /**
      * @param string $email
      * @param string $password
-     * @return \App\Domain\Entities\User
+     * @return \App\Domain\Aggregates\User
      * @throws \App\Exceptions\UserNotFoundException
      */
     public function findByEmailAndPassword(string $email, string $password): User;

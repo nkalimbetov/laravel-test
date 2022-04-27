@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Repositories;
 
-use App\Domain\Entities\User;
+use App\Domain\Aggregates\User;
 use App\Exceptions\UserNotFoundException;
 use App\Models\User as UserModel;
 use App\Repositories\Interfaces\UserRepositoryInterface;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 class UserRepository implements UserRepositoryInterface
 {
     /**
-     * @param \App\Domain\Entities\User $user
+     * @param \App\Domain\Aggregates\User $user
      * @param string $password
      * @return void
      */

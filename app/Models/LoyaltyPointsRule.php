@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Models;
 
@@ -6,12 +7,31 @@ use Illuminate\Database\Eloquent\Model;
 
 class LoyaltyPointsRule extends Model
 {
-    public const ACCRUAL_TYPE_RELATIVE_RATE = 'relative_rate';
-    public const ACCRUAL_TYPE_ABSOLUTE_POINTS_AMOUNT = 'absolute_points_amount';
+    /**
+     * @var bool
+     */
+    public $incrementing = false;
 
+    /**
+     * @var string
+     */
+    protected $keyType = 'string';
+
+    /**
+     * @var string
+     */
+    protected $primaryKey = 'id';
+
+    /**
+     * @var string
+     */
     protected $table = 'loyalty_points_rule';
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
+        'id',
         'points_rule',
         'accrual_type',
         'accrual_value',

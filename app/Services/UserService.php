@@ -5,7 +5,7 @@ namespace App\Services;
 
 use App\DataTransferObjects\UserLoginDTO;
 use App\DataTransferObjects\UserRegisterDTO;
-use App\Domain\Entities\User;
+use App\Domain\Aggregates\User;
 use App\Repositories\Interfaces\UserRepositoryInterface;
 use Illuminate\Support\Str;
 

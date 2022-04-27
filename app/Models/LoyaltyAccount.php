@@ -28,7 +28,11 @@ class LoyaltyAccount extends Model
      */
     protected $primaryKey = 'id';
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
+        'id',
         'phone',
         'card',
         'email',

@@ -6,7 +6,6 @@ use App\Events\AccountStatusChanged;
 use App\Mail\AccountActivated;
 use App\Mail\AccountDeactivated;
 use App\Services\LoyaltyAccountService;
-use App\Services\LoyaltyPointsTransactionService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
